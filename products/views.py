@@ -12,7 +12,7 @@ MY_ITEMS = [
 from .models import Product,Order
 from customers.models import Customer
 def productslistView(request):
-
+    print(request.user)
     products = Product.objects.all()
     context = {
         'object_list':products,
@@ -60,11 +60,12 @@ def editProductView(request,id):
         form = ProductForm(request.POST,instance=product)
         if form.is_valid():
             form.save()
+
             return redirect('product-list')
 
     context = {
-    'form':form,
-        'product_id':product.id,
+        'form': form,
+        'product_id': product.id,
     }
     return render(request,template_name,context)
 

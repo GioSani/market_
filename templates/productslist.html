@@ -9,7 +9,7 @@
   <div class="container">
     <h1>We have the best quality market, choose your product and enjoy! </h1>
     <img src="{% static 'images/food-g.png' %}" alt="Food" class="image-lists">
-    <a href="{% url 'add-product' %}">add product</a>
+    <a href="{% url 'products:add-product' %}">add product</a>
   {% for product in object_list %}
     <div class="row">
       <h2>name {{product.id}}</h2>
