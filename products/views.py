@@ -11,8 +11,15 @@ MY_ITEMS = [
 ]
 from .models import Product,Order
 from customers.models import Customer
+from django.contrib.auth.decorators import login_required
+
+
+
+@login_required
 def productslistView(request):
     print(request.user)
+
+
     products = Product.objects.all()
     context = {
         'object_list':products,
@@ -21,6 +28,7 @@ def productslistView(request):
     return render(request, template_name, context)
 
 
+@login_required
 def productView(request, id):
     product = Product.objects.get(id=id)
     template_name = "product.html"

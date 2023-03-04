@@ -1,4 +1,4 @@
-from .models import User
+from .models import User,Profile
 from django import forms
 
 
@@ -80,3 +80,30 @@ class LoginForm(forms.Form):
         if 'email' not in self.cleaned_data and 'password' not in self.cleaned_data:
             raise forms.ValidationError("please fill the forms")
         return self.cleaned_data
+
+class ChangePasswordForm(forms.Form):
+    current_password = forms.CharField(label='current_password',
+                                       widget=forms.PasswordInput(attrs={'class': "form-control",
+                                                                         'id': 'password',
+                                                                         "type": "password",
+                                                                         "name": "password",
+                                                                         }))
+    password = forms.CharField(label='new_password', widget=forms.PasswordInput(attrs={'class': "form-control",
+                                                                                       'id': 'password',
+                                                                                       "type": "password",
+                                                                                       "name": "password",
+                                                                                       }))
+    repeat_password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'class': "form-control",
+                                                                                          'id': 'password',
+                                                                                          "type": "password",
+                                                                                          "name": "password",
+                                                                                          }))
+
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model=Profile
+        fields=['first_name','last_name']
+        exclude=['uuid']
+

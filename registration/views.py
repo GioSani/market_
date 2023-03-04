@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings as conf_settings
-from .forms import RegistrationAccountForm,LoginForm
-from .models import User
+from .forms import RegistrationAccountForm,LoginForm,ProfileForm,ChangePasswordForm
+from .models import User,Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 # Create your views here.
@@ -41,6 +41,7 @@ def registrationView(request):
 def loginView(request):
     template_name = 'registration/login.html'
     form = LoginForm()
+
     print('test--1')
     if request.POST:
         print('test--2')
@@ -54,7 +55,11 @@ def loginView(request):
             if user is not None:
                 print('test--4')
                 login(request,user)
-                return redirect('products:product-list')
+                profile = Profile.objects.get(user=user)
+                if profile.filled == True:
+                    return redirect('products:product-list')
+                else:
+                    return redirect('registration:editProfile')
         else:
             print('test--5')
             print(form.errors)
@@ -63,9 +68,69 @@ def loginView(request):
     }
     return render(request,template_name,context)
 
+def editProfile(request):
+    template_name = 'registration/editProfile.html'
+
+    profile = Profile.objects.get(user=request.user)
+    form = ProfileForm(instance=profile)
+
+    if request.POST:
+        form = ProfileForm(request.POST,instance=profile)
+        if form.is_valid():
+            print('form---',form.cleaned_data)
+            data = form.save(commit=False)
+
+            data.filled = True
+
+            data.save()
+
+            return redirect('products:product-list')
+
+    context = {
+        'form':form
+    }
+
+    return render(request,template_name,context)
+
+def change_password(request):
+    template_name = 'registration/password_change.html'
+    form = ChangePasswordForm()
+    user = User.objects.get(id=request.user.id)
+    if request.POST:
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            print('pass form---',form.cleaned_data)
+            if request.user.check_password(form.cleaned_data.get('current_password')) and form.cleaned_data.get('password') == form.cleaned_data.get('repeat_password'):
+                #user = form.save(commit=False)
+                #user.password = form.cleaned_data.get('password')
+                user.set_password(str(form.cleaned_data['password']))
+                user.save()
+                login(request, user)
+                return redirect('products:product-list')
+            else:
+                print('error test-----')
+                messages.success(request, 'current password does not match')
+        else:
+            print('errors---',form.errors)
+    context = {
+        'form':form,
+    }
+    return render(request,template_name,context)
+
+
+
+
+
+
+
+
 def acitivate_url(request,uuid):
     user = User.objects.get(uuid=uuid)
     user.is_active = True
     user.save()
     print('user activaciashi shemovida')
     return HttpResponse('your user is successfuly activated')
+
+def logoutView(request):
+    logout(request)
+    return redirect('registration:login')

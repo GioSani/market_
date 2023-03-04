@@ -63,3 +63,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['identification_number']
 
     objects = AccountManager()
+
+
+class Profile(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
+    filled = models.BooleanField(default=False)
+    objects = models.Manager()
+    birthday = BirthdayField(null=True, blank=True)
+    birthday = BirthdayManager()
