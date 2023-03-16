@@ -57,6 +57,10 @@ def loginView(request):
                 login(request,user)
                 profile = Profile.objects.get(user=user)
                 if profile.filled == True:
+                    next = request.POST.get('next')
+
+                    if next:
+                        return redirect(next)
                     return redirect('products:product-list')
                 else:
                     return redirect('registration:editProfile')

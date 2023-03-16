@@ -10,27 +10,17 @@
     <h1>We have the best quality market, choose your product and enjoy! </h1>
     <img src="{% static 'images/food-g.png' %}" alt="Food" class="image-lists">
     <a href="{% url 'products:add-product' %}">add product</a>
-  {% for product in object_list %}
+  {% for order in object_list %}
     <div class="row">
-      <h2> {{product.id}}</h2>
-      <h2> {{product.name}}</h2>
-      <p>{{product.price}} USD</p>
-      <p>Quantity: {{product.quantity}}</p>
+      <h2> {{order.id}}</h2>
+      <h2> {{order.date_created}}</h2>
+      <p>{{order.total_amount}} USD</p>
+      <p>Quantity: {{order.quantity}}</p>
 
       <div>
-        <a href="{% url 'products:product' product.id %}" >Open product</a>
+        <a href="" >Order Detials</a>
       </div>
-        <div>
-          <a href="{% url 'products:edit-product' product.id %}" >edit product</a>
-        </div>
-      <div>
-        <form method="POST" action="{% url 'products:delete-product' product.id %}">
-          {%csrf_token%}
-          <button class="allAddress" onclick="ConfirmDelete()">Delete Product
-          </button>
 
-          </form>
-        </div>
 
 
 

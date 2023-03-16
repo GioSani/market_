@@ -10,7 +10,7 @@
     <h1>Enjoy with our delicious {{object.name}} !</h1>
     <div class="inside-cont">
       <div class="block">
-    <form method="post" action="{% url 'add-product' %}">
+    <form method="post" action="{% url 'products:add-product' %}">
         {% csrf_token %}
 
 
