@@ -171,6 +171,7 @@ a:hover{
                         <div class="row">
                             <div class="col"><h4><b>Shopping Cart</b></h4></div>
                             <div class="col align-self-center text-right text-muted">3 items</div>
+                            {% include "fragments/__search_fragment.html" %}
                         </div>
                     </div>
                      {% for product in object_list %}
@@ -224,7 +225,7 @@ a:hover{
 
                 </div>
                 {% include 'fragments/__shoppingCart.html' %}
-
+                {% include 'fragments/__pagination_fragment.html' %}
             </div>
 
         </div>

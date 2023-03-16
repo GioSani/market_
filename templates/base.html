@@ -11,7 +11,7 @@
   <nav>
     <ul>
       <li class="navigator"><a href="{% url 'products:product-list' %}">Products</a></li>
-         <li class="navigator"><a href="{% url 'products:shopping' %}">Shoping</a></li>
+         <li class="navigator"><a href="{% url 'products:shopping' 'slug' %}">Shoping</a></li>
         <li class="navigator"><a href="{% url 'products:my_orders' %}">My Orders</a></li>
       <li class="navigator"><a href="{% url 'registration:editProfile' %}">Profile</a></li>
       <li class="navigator"><a href="{% url 'registration:change_password' %}">Change Password</a></li>

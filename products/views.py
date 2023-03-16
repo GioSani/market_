@@ -86,19 +86,28 @@ def deleteProductView(request,id):
 
 
 from .cart import Cart
-
-
-def shoppingView(request):
+from .filters import ProductFilter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+def shoppingView(request,**kwargs):
 
     products = Product.objects.all()
 
     #del request.session['cart']
+    filter = ProductFilter(request.GET,queryset=products)
     cart = Cart(request)
+
+    page = request.GET.get('page', 1)
+    p = Paginator(filter.qs, 1)
+
+    # print('paginator====',p.num_pages,p.page_range,p.page(1),p.page(2).object_list)
+
+    product_list = p.page(page)
 
 
     template_name = 'shopping.html'
     context = {
-        'object_list':products,
+        'object_list':product_list,
+        'filter': filter,
         'cart':cart
     }
     return render(request,template_name,context)
